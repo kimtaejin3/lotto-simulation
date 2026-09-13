@@ -13,7 +13,6 @@ import { WinStamps } from "./WinStamps";
 import { WinToast } from "./WinToast";
 import { speedByKey, type SpeedKey } from "./speeds";
 import { ResultPanel } from "@/components/result/ResultPanel";
-import { AdSlot } from "@/components/ui/AdSlot";
 import { fmtInt, fmtKRW, weeksToElapsed } from "@/lib/lotto/time";
 import { track } from "@/lib/analytics";
 import { sfx, setSoundEnabled, haptic, unlock } from "@/lib/sound";
@@ -228,7 +227,6 @@ export function SimulateScreen() {
         <p className="text-center text-xs text-muted">
           {sim.wps > 0 && running && speedKey !== "1x" ? `초당 ${fmtInt(sim.wps)}회 추첨 중` : paused ? "멈춰 있어요. 계속 돌리거나 결과를 확인하세요" : "1등이 나오면 자동으로 멈춰요"}
         </p>
-        <AdSlot id="simulate" className="mt-2" />
       </aside>
 
       {showResult && (paused || won) && (

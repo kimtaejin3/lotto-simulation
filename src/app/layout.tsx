@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Link from "next/link";
 import { Jua, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import { SITE_NAME, SITE_URL, ADSENSE_CLIENT } from "@/lib/flags";
@@ -77,6 +78,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </Suspense>
         <div className="flex-1">{children}</div>
         <footer className="mx-auto w-full max-w-3xl px-5 pb-8 pt-10 text-center text-[11px] leading-relaxed text-muted">
+          <nav className="mb-3 flex justify-center gap-4 text-xs">
+            <Link href="/" className="hover:text-ink">홈</Link>
+            <Link href="/guide" className="hover:text-ink">로또 확률 가이드</Link>
+            <Link href="/setup" className="hover:text-ink">시뮬레이션 시작</Link>
+          </nav>
           <p>이 서비스는 확률 체험을 위한 시뮬레이션이며 실제 복권 당첨 결과를 예측하지 않습니다.</p>
           <p>실제 복권 구매를 권유하거나 당첨을 보장하지 않습니다. 공식 복권 사업자와 무관합니다.</p>
           <p className="mt-2">

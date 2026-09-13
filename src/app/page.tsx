@@ -3,6 +3,8 @@ import { LinkButton } from "@/components/ui/Button";
 import { HeroVisual } from "@/components/landing/HeroVisual";
 import { LandingTracker } from "@/components/landing/LandingTracker";
 import { JsonLd } from "@/components/ui/JsonLd";
+import { AdSlot } from "@/components/ui/AdSlot";
+import Link from "next/link";
 import { FIRST_PRIZE_ODDS } from "@/lib/lotto/constants";
 import { SITE_NAME } from "@/lib/flags";
 import { SEO, FAQ, RANK_ODDS, expectedYears, faqJsonLd } from "@/lib/seo";
@@ -96,6 +98,8 @@ export default function Home() {
         </p>
       </section>
 
+      <AdSlot id="landing_mid" className="mb-20" />
+
       <section className="mx-auto max-w-6xl px-5 pb-20" aria-labelledby="rank-odds">
         <h2 id="rank-odds" className="font-display text-3xl leading-tight sm:text-4xl">
           로또 6/45 등수별 당첨 확률
@@ -141,6 +145,22 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <section className="mx-auto max-w-6xl px-5 pb-16">
+        <div className="rounded-card border border-line bg-paper/60 px-6 py-6 dark:bg-bg-2 sm:flex sm:items-center sm:justify-between sm:gap-8">
+          <div>
+            <h2 className="font-display text-2xl leading-tight">로또 확률, 제대로 알고 싶다면</h2>
+            <p className="mt-1 max-w-[52ch] text-sm leading-relaxed text-ink-2">
+              1등 확률이 왜 814만분의 1인지, 매주 사면 정말 몇 년이 걸리는지, 흔한 오해까지 차근차근 정리한 글입니다.
+            </p>
+          </div>
+          <Link href="/guide" className="mt-4 inline-flex h-11 shrink-0 items-center rounded-full border border-line px-5 font-display text-base hover:bg-accent-tint sm:mt-0">
+            확률 가이드 읽기
+          </Link>
+        </div>
+      </section>
+
+      <AdSlot id="landing_bottom" className="mb-16" />
 
       <section className="mx-auto max-w-6xl px-5 pb-24 text-center">
         <h2 className="font-display text-3xl leading-tight sm:text-4xl">평균은 평균일 뿐. 당신의 1등은 언제일까요?</h2>

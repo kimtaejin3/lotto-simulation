@@ -9,7 +9,6 @@ import { Ball } from "@/components/ui/Ball";
 import { Button } from "@/components/ui/Button";
 import { ShareButton } from "./ShareButton";
 import { TicketReport } from "./TicketReport";
-import { AdSlot } from "@/components/ui/AdSlot";
 
 interface Props {
   won: boolean;
@@ -149,8 +148,7 @@ export function ResultPanel({ won, state, tickets, winningNumbers, onClose, onRe
           <TicketReport state={state} tickets={tickets} />
 
           <div className="mt-4 px-6">
-            <AdSlot id="result" />
-            <div className="mt-3 grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               <Button variant="secondary" onClick={onReplaySame} className="text-base">
                 <ArrowsClockwise size={20} weight="bold" /> 같은 번호로
               </Button>

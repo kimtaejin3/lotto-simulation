@@ -5,7 +5,6 @@ import { Shuffle } from "@phosphor-icons/react";
 import { useSetup, PRESETS, MAX_GAMES, isSetupComplete } from "@/store/setup";
 import { TicketSheet } from "@/components/ticket/TicketSheet";
 import { Button } from "@/components/ui/Button";
-import { AdSlot } from "@/components/ui/AdSlot";
 import { GAMES_PER_SHEET, GAME_PRICE } from "@/lib/lotto/constants";
 import { track } from "@/lib/analytics";
 
@@ -137,8 +136,6 @@ export function SetupFlow() {
           ))}
         </div>
       </section>
-
-      <AdSlot id="setup" className="mt-10" />
 
       <div className="fixed inset-x-0 bottom-0 z-20 border-t border-line/60 bg-bg/85 pb-[max(env(safe-area-inset-bottom),12px)] pt-3 backdrop-blur-md">
         <div className="mx-auto flex max-w-5xl items-center gap-3 px-4 sm:px-6">

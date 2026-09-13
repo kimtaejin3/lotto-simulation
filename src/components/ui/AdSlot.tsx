@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { ADS_ENABLED, ADSENSE_CLIENT, ADSENSE_SLOTS } from "@/lib/flags";
+import { ADS_ENABLED, ADSENSE_CLIENT, ADSENSE_SLOTS, type AdSlotId } from "@/lib/flags";
 import { track } from "@/lib/analytics";
 
 declare global {
@@ -11,10 +11,9 @@ declare global {
 
 /**
  * AdSense unit. Renders nothing unless NEXT_PUBLIC_ADS_ENABLED=true.
- * With a slot id it renders a responsive display unit; without one, a dashed placeholder
- * so layout can be checked. Positions follow PRD §21 (never directly above the drum).
+ * Only placed between real content sections (landing, guide) per AdSense policy.
  */
-export function AdSlot({ id, className = "" }: { id: "setup" | "simulate" | "result"; className?: string }) {
+export function AdSlot({ id, className = "" }: { id: AdSlotId; className?: string }) {
   const slot = ADSENSE_SLOTS[id];
   const pushed = useRef(false);
 

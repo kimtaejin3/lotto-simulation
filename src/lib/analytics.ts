@@ -19,6 +19,7 @@ export type AnalyticsEvent =
   | "simulation_stopped"
   | "simulation_resumed"
   | "result_share_click"
+  | "result_share_card_view"
   | "result_share_success"
   | "replay_same_numbers"
   | "replay_new_numbers"
