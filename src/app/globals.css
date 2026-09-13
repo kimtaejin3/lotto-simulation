@@ -1,26 +1,137 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  color-scheme: light;
+  --bg: #fff4f1;
+  --bg-2: #ffe9e6;
+  --paper: #fffdfc;
+  --ink: #2b2330;
+  --ink-2: #4d4350;
+  --muted: #8a7f86;
+  --line: #f3d3da;
+  --accent: #ee3d62;
+  --accent-ink: #d92a52;
+  --accent-soft: #ffd9e1;
+  --accent-tint: #fff0f3;
+  --glass: rgba(255, 255, 255, 0.55);
+  --shadow: 0 10px 30px -12px rgba(238, 61, 98, 0.25);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #1c1519;
+    --bg-2: #261b21;
+    --paper: #fffdfc;
+    --ink: #f6eef0;
+    --ink-2: #d9cdd2;
+    --muted: #a3969c;
+    --line: #3d2f36;
+    --accent: #ff5c7c;
+    --accent-ink: #ff8aa1;
+    --accent-soft: #4a2531;
+    --accent-tint: #2c1c22;
+    --glass: rgba(40, 28, 33, 0.55);
+    --shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.6);
   }
 }
 
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-tint: var(--accent-tint);
+  --font-sans: var(--font-body), "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --font-display: var(--font-display), var(--font-body), system-ui, sans-serif;
+  --radius-card: 20px;
+  --radius-cell: 8px;
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  overscroll-behavior-y: none;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Soft dotted background, like a lottery counter mat */
+.bg-dots {
+  background-image: radial-gradient(color-mix(in srgb, var(--accent) 14%, transparent) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+}
+
+/* Lottery-ticket paper */
+.paper {
+  background: var(--paper);
+  color: #2b2330;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.8) inset,
+    0 18px 40px -20px rgba(80, 30, 45, 0.35);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.012) 0 1px, transparent 1px 3px);
+}
+.paper-perforated {
+  --notch: 9px;
+  -webkit-mask:
+    radial-gradient(circle at 50% 0, transparent calc(var(--notch) * 0.55), #000 calc(var(--notch) * 0.55 + 0.5px)) top / var(--notch) var(--notch) repeat-x,
+    radial-gradient(circle at 50% 100%, transparent calc(var(--notch) * 0.55), #000 calc(var(--notch) * 0.55 + 0.5px)) bottom / var(--notch) var(--notch) repeat-x,
+    linear-gradient(#000, #000) center / 100% calc(100% - var(--notch) * 2) no-repeat;
+  mask:
+    radial-gradient(circle at 50% 0, transparent calc(var(--notch) * 0.55), #000 calc(var(--notch) * 0.55 + 0.5px)) top / var(--notch) var(--notch) repeat-x,
+    radial-gradient(circle at 50% 100%, transparent calc(var(--notch) * 0.55), #000 calc(var(--notch) * 0.55 + 0.5px)) bottom / var(--notch) var(--notch) repeat-x,
+    linear-gradient(#000, #000) center / 100% calc(100% - var(--notch) * 2) no-repeat;
+}
+
+/* Pencil-like mark inside a ticket cell */
+.mark {
+  background:
+    repeating-linear-gradient(115deg, rgba(43, 35, 48, 0.92) 0 2px, rgba(43, 35, 48, 0.72) 2px 3.5px);
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgba(43, 35, 48, 0.25);
+}
+
+.btn-press:active {
+  transform: translateY(1px) scale(0.985);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Collapse AdSense units that returned no ad (unapproved site, no fill, blocked). */
+ins.adsbygoogle[data-ad-status="unfilled"] {
+  display: none !important;
+}
+ins.adsbygoogle {
+  min-height: 0;
+  max-height: 280px;
+  overflow: hidden;
 }

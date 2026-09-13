@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 15만년 로또 — 평생 로또 시뮬레이터
 
-## Getting Started
+"매주 로또를 산다면 1등까지 몇 년 걸릴까?"를 시간 흐름으로 체감하게 만드는 인터랙티브 웹서비스. 제품 정의는 [PRD.md](./PRD.md) 참고.
 
-First, run the development server:
+## 개발
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev        # http://localhost:3000
+pnpm test       # 확률 엔진 vitest
+pnpm lint
+pnpm build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+환경 변수는 `.env.example` 참고. `NEXT_PUBLIC_ADS_ENABLED=true` 로 AdSense 슬롯을 켤 수 있다(기본 off).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 구조
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/lib/lotto/      확률 엔진 (engine.ts, rng.ts, time.ts) + 테스트
+src/workers/        sim.worker.ts — 배치 시뮬레이션 Web Worker
+src/store/          setup.ts — 게임 수/번호 상태 (sessionStorage)
+src/components/
+  ticket/           로또 마킹 용지 UI
+  machine/          Canvas 추첨기(Drum) + 당첨 공 슬롯
+  sim/              시뮬레이션 화면, 시간 카운터, 속도 컨트롤
+  result/           결과 패널, 공유 카드
+src/app/            / (랜딩) · /setup · /simulate · /share-preview (dev 전용)
+references/         시각 레퍼런스 사진 (복제 금지, 분위기 참고용)
+```
 
-## Learn More
+## 엔진 메모
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 6/45, 보너스 포함. 등수 판정은 비트마스크 popcount.
+- RNG: xoshiro128** (crypto.getRandomValues 시드). 용지 자동 선택은 crypto 직접 사용.
+- 처리량: 약 2M 주/초 (Node 22, M-series). UI 최고 속도는 1만x(초당 5,000주)로 제한해 시간 체감을 유지한다. 매주 5게임 기준 1등까지 평균 약 1.6M주 → 1만x에서 약 5분.
