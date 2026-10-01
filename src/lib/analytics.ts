@@ -23,7 +23,12 @@ export type AnalyticsEvent =
   | "result_share_success"
   | "replay_same_numbers"
   | "replay_new_numbers"
-  | "ad_impression";
+  | "ad_impression"
+  | "golden_started"
+  | "golden_message_entered"
+  | "golden_pressed"
+  | "golden_draw_done"
+  | "win_screen_opened";
 
 export type AnalyticsProps = Record<string, string | number | boolean | undefined>;
 

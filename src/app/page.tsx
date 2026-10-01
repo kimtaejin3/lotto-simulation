@@ -28,23 +28,60 @@ export default function Home() {
         </LinkButton>
       </header>
 
-      <section className="mx-auto grid min-h-[calc(100dvh-4rem)] max-w-6xl grid-cols-1 items-center gap-10 px-5 pb-16 pt-6 lg:grid-cols-[1.05fr_1fr] lg:pb-0 lg:pt-0">
+      <section className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-5 pb-10 pt-6 lg:grid-cols-[1.05fr_1fr] lg:pt-10">
         <div className="order-2 lg:order-1">
           <h1 className="font-display text-[44px] leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
             당신은 몇 년 뒤<br />
             로또 <span className="text-accent">1등</span>이 될까요?
           </h1>
           <p className="mt-5 max-w-[34ch] text-base leading-relaxed text-ink-2 sm:text-lg">
-            매주 살 게임 수와 번호를 정하고, 1등이 나올 때까지 시간을 돌려보세요.
+            매주 살 게임 수와 번호를 정하고, 1등이 나올 때까지 시간을 돌려보세요. 직접 추첨 버튼을 누르는 황금손 모드도 있습니다.
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <LinkButton href="/setup" className="h-14 px-8 text-xl">
-              내 로또 인생 시작하기
-            </LinkButton>
-          </div>
         </div>
         <div className="order-1 lg:order-2">
           <HeroVisual />
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-5 pb-20" aria-labelledby="choose">
+        <h2 id="choose" className="sr-only">
+          두 가지 모드 중 선택
+        </h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <Link
+            href="/setup"
+            className="btn-press group flex flex-col rounded-card border border-line bg-paper/70 p-6 transition-colors hover:border-accent dark:bg-bg-2"
+          >
+            <span className="self-start rounded-full bg-accent-tint px-2.5 py-1 text-xs text-accent-ink">시간 체험</span>
+            <h3 className="mt-3 font-display text-2xl leading-tight sm:text-[28px]">평생 로또 시뮬레이터</h3>
+            <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-2">
+              번호를 마킹하고 시간을 빨리 감아, 1등이 나올 때까지 몇 년이 걸리는지 직접 지켜봅니다.
+            </p>
+            <span className="mt-5 inline-flex items-center gap-1.5 font-display text-lg text-accent">
+              내 로또 인생 시작하기
+              <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
+                →
+              </span>
+            </span>
+          </Link>
+
+          <Link
+            href="/golden"
+            className="btn-press group relative flex flex-col overflow-hidden rounded-card border border-[#E3B23C]/50 p-6 transition-colors hover:border-[#E3B23C]"
+            style={{ background: "linear-gradient(150deg, rgba(245,200,66,0.16) 0%, rgba(245,200,66,0.04) 60%)" }}
+          >
+            <span className="self-start rounded-full bg-[#F5C842] px-2.5 py-1 text-xs font-medium text-[#3D2A00]">NEW</span>
+            <h3 className="mt-3 font-display text-2xl leading-tight sm:text-[28px]">황금손 추첨기</h3>
+            <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-2">
+              추첨 방송의 황금손처럼 한마디 남기고 버튼을 누릅니다. 뽑은 번호로 1등 당첨 화면까지 만들 수 있어요.
+            </p>
+            <span className="mt-5 inline-flex items-center gap-1.5 font-display text-lg text-[#B8860B] dark:text-[#F5C842]">
+              황금손 되어보기
+              <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
+                →
+              </span>
+            </span>
+          </Link>
         </div>
       </section>
 
@@ -108,7 +145,7 @@ export default function Home() {
           시뮬레이터가 그대로 사용하는 실제 규칙입니다. 1부터 45까지 중 6개를 뽑고 보너스 번호 1개를 추가로 뽑습니다.
         </p>
         <div className="mt-6 overflow-x-auto">
-          <table className="w-full min-w-[420px] border-collapse text-left text-sm sm:text-base">
+          <table className="w-full min-w-[300px] border-collapse text-left text-sm sm:text-base">
             <thead>
               <tr className="text-muted">
                 <th className="py-2 pr-4 font-normal">등수</th>

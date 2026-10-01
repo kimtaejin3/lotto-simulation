@@ -75,7 +75,7 @@ export default function GuidePage() {
 
           <h2>등수별 확률표</h2>
           <div className="not-prose overflow-x-auto">
-            <table className="w-full min-w-[420px] border-collapse text-left text-sm sm:text-base">
+            <table className="w-full min-w-[300px] border-collapse text-left text-sm sm:text-base">
               <thead>
                 <tr className="text-muted">
                   <th className="py-2 pr-4 font-normal">등수</th>

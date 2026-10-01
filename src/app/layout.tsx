@@ -80,6 +80,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="mx-auto w-full max-w-3xl px-5 pb-8 pt-10 text-center text-[11px] leading-relaxed text-muted">
           <nav className="mb-3 flex justify-center gap-4 text-xs">
             <Link href="/" className="hover:text-ink">홈</Link>
+            <Link href="/golden" className="hover:text-ink">황금손 추첨기</Link>
             <Link href="/guide" className="hover:text-ink">로또 확률 가이드</Link>
             <Link href="/setup" className="hover:text-ink">시뮬레이션 시작</Link>
           </nav>

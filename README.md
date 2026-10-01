@@ -25,7 +25,8 @@ src/components/
   machine/          Canvas 추첨기(Drum) + 당첨 공 슬롯
   sim/              시뮬레이션 화면, 시간 카운터, 속도 컨트롤
   result/           결과 패널, 공유 카드
-src/app/            / (랜딩) · /setup · /simulate · /share-preview (dev 전용)
+src/components/golden/  황금손 추첨기 + 1등 당첨 화면
+src/app/            / (랜딩) · /setup · /simulate · /golden · /win · /guide · /share-preview (dev 전용)
 references/         시각 레퍼런스 사진 (복제 금지, 분위기 참고용)
 ```
 
