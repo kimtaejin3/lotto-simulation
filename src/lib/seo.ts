@@ -4,10 +4,10 @@ import { FIRST_PRIZE_ODDS, WEEKS_PER_YEAR } from "./lotto/constants";
 export const SEO = {
   name: SITE_NAME,
   url: SITE_URL,
-  title: "로또 1등까지 나는 몇 년 걸릴까? 평생 로또 시뮬레이터",
-  shortTitle: "로또 1등까지 몇 년 걸릴까?",
+  title: "로또 시뮬레이터와 황금손 추첨기",
+  shortTitle: "로또, 직접 돌려보세요",
   description:
-    "매주 로또를 산다면 1등에 당첨되기까지 얼마나 걸릴까요? 번호를 직접 고르고 추첨기를 돌려 몇 년, 몇만 년이 흐르는지 직접 체험하는 무료 로또 확률 시뮬레이터입니다.",
+    "매주 로또를 사면 1등까지 몇 년이 걸릴까요? 시간을 빨리 감아 확인하는 시뮬레이터와, 덕담 한마디 남기고 직접 버튼을 누르는 황금손 추첨기. 둘 다 무료입니다.",
   keywords: [
     "로또 시뮬레이터",
     "로또 시뮬레이션",
@@ -21,6 +21,9 @@ export const SEO = {
     "로또 번호 추첨 시뮬레이션",
     "평생 로또",
     "15만년 로또",
+    "황금손 추첨기",
+    "로또 추첨 시뮬레이터",
+    "로또 번호 뽑기",
   ],
   locale: "ko_KR",
   twitterHandle: undefined as string | undefined,

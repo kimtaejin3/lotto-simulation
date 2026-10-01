@@ -268,8 +268,8 @@ export function GoldenFlow() {
               {/* 버튼 + 황금손 */}
               <div className="mt-auto flex flex-col items-center pt-3">
                 {phase !== "done" && (
-                  <div className="pointer-events-none relative z-10 flex h-[112px] w-full items-end justify-center">
-                    <GoldenHand pressed={phase === "drawing"} size={84} />
+                  <div className="pointer-events-none relative z-10 flex h-[120px] w-full items-end justify-center">
+                    <GoldenHand pressed={phase === "drawing"} size={80} />
                   </div>
                 )}
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { LinkButton } from "@/components/ui/Button";
-import { HeroVisual } from "@/components/landing/HeroVisual";
+import { MiniTicket } from "@/components/ticket/MiniTicket";
+import { GoldenHand } from "@/components/golden/GoldenHand";
 import { LandingTracker } from "@/components/landing/LandingTracker";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { AdSlot } from "@/components/ui/AdSlot";
@@ -16,71 +17,93 @@ export const metadata: Metadata = {
 
 const fmt = (n: number) => Math.round(n).toLocaleString("ko-KR");
 
+const CARD_TICKET = [
+  [3, 11, 18, 27, 32, 41],
+  [7, 14, 22, 29, 36, 44],
+  [1, 9, 20, 25, 38, 45],
+  [5, 13, 19, 31, 40, 43],
+  [8, 16, 23, 30, 34, 42],
+];
+
 export default function Home() {
   return (
     <main className="bg-dots">
       <LandingTracker />
       <JsonLd data={faqJsonLd()} />
-      <header className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
+      <header className="mx-auto flex h-16 max-w-6xl items-center px-5">
         <span className="font-display text-2xl text-accent">{SITE_NAME}</span>
-        <LinkButton href="/setup" variant="secondary" className="h-10 px-4 text-base">
-          바로 시작
-        </LinkButton>
       </header>
 
-      <section className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-5 pb-10 pt-6 lg:grid-cols-[1.05fr_1fr] lg:pt-10">
-        <div className="order-2 lg:order-1">
-          <h1 className="font-display text-[44px] leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
-            당신은 몇 년 뒤<br />
-            로또 <span className="text-accent">1등</span>이 될까요?
-          </h1>
-          <p className="mt-5 max-w-[34ch] text-base leading-relaxed text-ink-2 sm:text-lg">
-            매주 살 게임 수와 번호를 정하고, 1등이 나올 때까지 시간을 돌려보세요. 직접 추첨 버튼을 누르는 황금손 모드도 있습니다.
-          </p>
-        </div>
-        <div className="order-1 lg:order-2">
-          <HeroVisual />
-        </div>
+      <section className="mx-auto max-w-6xl px-5 pb-6 pt-4 sm:pt-8">
+        <h1 className="font-display text-[40px] leading-[1.08] tracking-tight sm:text-[56px] lg:text-6xl">
+          로또, 직접 돌려보는<br />
+          <span className="text-accent">두 가지 방법</span>
+        </h1>
+        <p className="mt-4 max-w-[46ch] text-base leading-relaxed text-ink-2 sm:text-lg">
+          1등이 나올 때까지 시간을 빨리 감아보거나, 황금손이 되어 추첨 버튼을 직접 눌러보세요. 복권 한 장 사지 않고 둘 다 무료입니다.
+        </p>
       </section>
 
       <section className="mx-auto max-w-6xl px-5 pb-20" aria-labelledby="choose">
         <h2 id="choose" className="sr-only">
-          두 가지 모드 중 선택
+          모드 선택
         </h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Link
             href="/setup"
-            className="btn-press group flex flex-col rounded-card border border-line bg-paper/70 p-6 transition-colors hover:border-accent dark:bg-bg-2"
+            className="btn-press group flex flex-col overflow-hidden rounded-card border border-line bg-paper/70 transition-colors hover:border-accent dark:bg-bg-2"
           >
-            <span className="self-start rounded-full bg-accent-tint px-2.5 py-1 text-xs text-accent-ink">시간 체험</span>
-            <h3 className="mt-3 font-display text-2xl leading-tight sm:text-[28px]">평생 로또 시뮬레이터</h3>
-            <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-2">
-              번호를 마킹하고 시간을 빨리 감아, 1등이 나올 때까지 몇 년이 걸리는지 직접 지켜봅니다.
-            </p>
-            <span className="mt-5 inline-flex items-center gap-1.5 font-display text-lg text-accent">
-              내 로또 인생 시작하기
-              <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
-                →
+            <div className="relative h-[132px] overflow-hidden bg-accent-tint/60 sm:h-[150px]">
+              <div className="absolute left-1/2 top-7 -translate-x-1/2 rotate-[-7deg] transition-transform duration-300 group-hover:-translate-y-1">
+                <MiniTicket numbers={CARD_TICKET} />
+              </div>
+            </div>
+            <div className="flex flex-1 flex-col p-6">
+              <span className="self-start rounded-full bg-accent-tint px-2.5 py-1 text-xs text-accent-ink">시간 체험</span>
+              <h3 className="mt-3 font-display text-2xl leading-tight sm:text-[28px]">평생 로또 시뮬레이터</h3>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-2">
+                번호를 마킹하고 시간을 빨리 감아, 1등이 나올 때까지 몇 년이 걸리는지 직접 지켜봅니다.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-1.5 font-display text-lg text-accent">
+                내 로또 인생 시작하기
+                <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
+                  →
+                </span>
               </span>
-            </span>
+            </div>
           </Link>
 
           <Link
             href="/golden"
-            className="btn-press group relative flex flex-col overflow-hidden rounded-card border border-[#E3B23C]/50 p-6 transition-colors hover:border-[#E3B23C]"
-            style={{ background: "linear-gradient(150deg, rgba(245,200,66,0.16) 0%, rgba(245,200,66,0.04) 60%)" }}
+            className="btn-press group flex flex-col overflow-hidden rounded-card border border-[#E3B23C]/50 transition-colors hover:border-[#E3B23C]"
+            style={{ background: "linear-gradient(160deg, rgba(245,200,66,0.14) 0%, rgba(245,200,66,0.03) 60%)" }}
           >
-            <span className="self-start rounded-full bg-[#F5C842] px-2.5 py-1 text-xs font-medium text-[#3D2A00]">NEW</span>
-            <h3 className="mt-3 font-display text-2xl leading-tight sm:text-[28px]">황금손 추첨기</h3>
-            <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-2">
-              추첨 방송의 황금손처럼 한마디 남기고 버튼을 누릅니다. 뽑은 번호로 1등 당첨 화면까지 만들 수 있어요.
-            </p>
-            <span className="mt-5 inline-flex items-center gap-1.5 font-display text-lg text-[#B8860B] dark:text-[#F5C842]">
-              황금손 되어보기
-              <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
-                →
+            <div
+              className="relative flex h-[132px] items-end justify-center overflow-hidden sm:h-[150px]"
+              style={{ background: "radial-gradient(90% 120% at 50% 0%, rgba(245,200,66,0.3) 0%, rgba(245,200,66,0.06) 60%, transparent 100%)" }}
+            >
+              <div className="-translate-y-[26px]">
+                <GoldenHand pressed={false} size={68} />
+              </div>
+              <span
+                aria-hidden="true"
+                className="absolute bottom-3 left-1/2 h-[26px] w-[54px] -translate-x-1/2 rounded-full"
+                style={{ background: "radial-gradient(60% 80% at 50% 30%, #FF6B80 0%, #C8102E 70%, #8E1B2E 100%)" }}
+              />
+            </div>
+            <div className="flex flex-1 flex-col p-6">
+              <span className="self-start rounded-full bg-[#F5C842] px-2.5 py-1 text-xs font-medium text-[#3D2A00]">NEW</span>
+              <h3 className="mt-3 font-display text-2xl leading-tight sm:text-[28px]">황금손 추첨기</h3>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-2">
+                추첨 방송의 황금손처럼 한마디 남기고 버튼을 누릅니다. 뽑은 번호로 1등 당첨 화면까지 만들 수 있어요.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-1.5 font-display text-lg text-[#B8860B] dark:text-[#F5C842]">
+                황금손 되어보기
+                <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
+                  →
+                </span>
               </span>
-            </span>
+            </div>
           </Link>
         </div>
       </section>
