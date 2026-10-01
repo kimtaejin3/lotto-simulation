@@ -4,9 +4,9 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Shuffle, Eye, EyeSlash, SlidersHorizontal } from "@phosphor-icons/react";
 import { WinScreen, type WinScreenData } from "./WinScreen";
-import { drawNumbers } from "@/lib/lotto/engine";
+import { drawNumbers, autoPick } from "@/lib/lotto/engine";
 import { CryptoRng } from "@/lib/lotto/rng";
-import { DEFAULT_PRIZE_PER_GAME, lastSaturday, roundOf, toISODate, fromISODate, fmtWon } from "@/lib/golden";
+import { DEFAULT_PRIZE_PER_GAME, GAME_LETTERS, lastSaturday, roundOf, toISODate, fromISODate, fmtWon } from "@/lib/golden";
 import { track } from "@/lib/analytics";
 
 const rng = new CryptoRng();
@@ -29,14 +29,15 @@ export function WinBuilder() {
     const bonusUrl = Number(params.get("b"));
     const numbers = fromUrl ?? d.numbers;
     const bonus = fromUrl && bonusUrl >= 1 && bonusUrl <= 45 && !fromUrl.includes(bonusUrl) ? bonusUrl : d.bonus;
-    const games = 5;
     return {
       round: roundOf(sat),
       date: toISODate(sat),
       numbers,
       bonus,
-      games,
-      totalPrize: DEFAULT_PRIZE_PER_GAME * games,
+      games: 5,
+      winIndex: 0,
+      otherNumbers: Array.from({ length: 5 }, () => autoPick(rng)),
+      totalPrize: DEFAULT_PRIZE_PER_GAME,
     };
   }, [params]);
 
@@ -50,11 +51,11 @@ export function WinBuilder() {
 
   const reroll = () => {
     const d = drawNumbers(rng);
-    setData((p) => ({ ...p, numbers: d.numbers, bonus: d.bonus }));
+    setData((p) => ({ ...p, numbers: d.numbers, bonus: d.bonus, otherNumbers: Array.from({ length: 5 }, () => autoPick(rng)) }));
   };
 
   const setGames = (g: number) => {
-    setData((p) => ({ ...p, games: g, totalPrize: DEFAULT_PRIZE_PER_GAME * g }));
+    setData((p) => ({ ...p, games: g, winIndex: Math.min(p.winIndex, g - 1) }));
   };
 
   const setNumberAt = (i: number, v: number) => {
@@ -181,7 +182,7 @@ export function WinBuilder() {
             </div>
 
             <div className="mt-5">
-              <span className="text-sm text-white/60">1등이 나온 게임 수</span>
+              <span className="text-sm text-white/60">구매한 게임 수</span>
               <div className="mt-2 grid grid-cols-5 gap-1.5">
                 {[1, 2, 3, 4, 5].map((g) => (
                   <button
@@ -199,6 +200,27 @@ export function WinBuilder() {
               </div>
             </div>
 
+            <div className="mt-5">
+              <span className="text-sm text-white/60">1등이 나온 게임</span>
+              <div className="mt-2 grid grid-cols-5 gap-1.5">
+                {GAME_LETTERS.map((letter, i) => (
+                  <button
+                    key={letter}
+                    type="button"
+                    disabled={i >= data.games}
+                    onClick={() => set("winIndex", i)}
+                    aria-pressed={data.winIndex === i}
+                    className={`h-11 rounded-lg font-display text-base transition-colors disabled:opacity-30 ${
+                      data.winIndex === i ? "bg-accent text-white" : "bg-white/10 text-white/80 hover:bg-white/20"
+                    }`}
+                  >
+                    {letter}
+                  </button>
+                ))}
+              </div>
+              <p className="mt-1.5 text-xs text-white/40">나머지 게임은 다른 번호로 채워지고 각자 등수가 표시됩니다.</p>
+            </div>
+
             <label className="mt-5 flex flex-col gap-1.5 text-sm">
               <span className="text-white/60">총 당첨금액 (원)</span>
               <input
@@ -208,7 +230,7 @@ export function WinBuilder() {
                 onChange={(e) => set("totalPrize", Math.max(0, Number(e.target.value) || 0))}
                 className="h-11 rounded-lg border border-white/15 bg-white/10 px-3 text-white outline-none focus:border-accent"
               />
-              <span className="text-xs text-white/40">{fmtWon(data.totalPrize)}원 · 게임 수를 바꾸면 자동으로 다시 계산됩니다.</span>
+              <span className="text-xs text-white/40">{fmtWon(data.totalPrize)}원 · 1등 1게임 기준 금액입니다.</span>
             </label>
 
             <button
