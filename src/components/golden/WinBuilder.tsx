@@ -11,13 +11,26 @@ import { track } from "@/lib/analytics";
 
 const rng = new CryptoRng();
 
-function parseNumbers(raw: string | null): number[] | null {
+function parseNumbers(raw: string | null, sep = ","): number[] | null {
   if (!raw) return null;
-  const ns = raw.split(",").map((s) => Number(s.trim()));
+  const ns = raw.split(sep).map((s) => Number(s.trim()));
   if (ns.length !== 6 || ns.some((n) => !Number.isInteger(n) || n < 1 || n > 45)) return null;
   if (new Set(ns).size !== 6) return null;
-  return ns.sort((a, b) => a - b);
+  return [...ns].sort((a, b) => a - b);
 }
+
+/** g=1-9-12-32-34-36_4-9-17-39-43-45 처럼 게임 여러 줄을 한 번에 받는다. */
+function parseGames(raw: string | null): number[][] | null {
+  if (!raw) return null;
+  const parsed = raw.split("_").map((g) => parseNumbers(g, "-"));
+  if (!parsed.length || parsed.length > 5 || parsed.some((g) => g === null)) return null;
+  return parsed as number[][];
+}
+
+const clampInt = (v: string | null, min: number, max: number, fallback: number) => {
+  const n = Number(v);
+  return Number.isInteger(n) && n >= min && n <= max ? n : fallback;
+};
 
 export function WinBuilder() {
   const params = useSearchParams();
@@ -25,28 +38,43 @@ export function WinBuilder() {
   const initial = useMemo<WinScreenData>(() => {
     const sat = lastSaturday();
     const d = drawNumbers(rng);
+
+    // g로 게임 전체를 받으면 그 줄들을 그대로 쓰고, 없으면 임의로 채운다.
+    const urlGames = parseGames(params.get("g"));
+    const gameCount = urlGames?.length ?? 5;
+    const winIndex = clampInt(params.get("w"), 0, gameCount - 1, 0);
+
     const fromUrl = parseNumbers(params.get("n"));
+    const numbers = fromUrl ?? urlGames?.[winIndex] ?? d.numbers;
     const bonusUrl = Number(params.get("b"));
-    const numbers = fromUrl ?? d.numbers;
-    const bonus = fromUrl && bonusUrl >= 1 && bonusUrl <= 45 && !fromUrl.includes(bonusUrl) ? bonusUrl : d.bonus;
+    const bonus =
+      Number.isInteger(bonusUrl) && bonusUrl >= 1 && bonusUrl <= 45 && !numbers.includes(bonusUrl) ? bonusUrl : d.bonus;
+
+    const dateUrl = params.get("d");
+    const date = dateUrl && /^\d{4}-\d{2}-\d{2}$/.test(dateUrl) ? dateUrl : toISODate(sat);
+    const round = clampInt(params.get("r"), 1, 99_999, roundOf(fromISODate(date)));
+
+    const prizeUrl = Number(params.get("p"));
+    const totalPrize = Number.isFinite(prizeUrl) && prizeUrl > 0 ? Math.floor(prizeUrl) : DEFAULT_PRIZE_PER_GAME;
+
     return {
-      round: roundOf(sat),
-      date: toISODate(sat),
+      round,
+      date,
       numbers,
       bonus,
-      games: 5,
-      winIndex: 0,
-      otherNumbers: Array.from({ length: 5 }, () => autoPick(rng)),
-      totalPrize: DEFAULT_PRIZE_PER_GAME,
+      games: gameCount,
+      winIndex,
+      otherNumbers: urlGames ?? Array.from({ length: 5 }, () => autoPick(rng)),
+      totalPrize,
     };
   }, [params]);
 
   const [data, setData] = useState<WinScreenData>(initial);
-  const [showControls, setShowControls] = useState(true);
+  const [showControls, setShowControls] = useState(params.get("cap") !== "1");
   const set = useCallback(<K extends keyof WinScreenData>(k: K, v: WinScreenData[K]) => setData((p) => ({ ...p, [k]: v })), []);
 
   useEffect(() => {
-    track("win_screen_opened", { fromDraw: Boolean(params.get("n")) });
+    track("win_screen_opened", { fromDraw: Boolean(params.get("n")), preset: Boolean(params.get("g")) });
   }, [params]);
 
   const reroll = () => {
